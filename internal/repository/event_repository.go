@@ -35,6 +35,15 @@ func (r *Repository) UpsertCustomer(customerID, webhookURL string) (*model.Custo
 	return &c, nil
 }
 
+// EnsureCustomer creates a customer row with an empty webhook URL if one does
+// not already exist, leaving any existing URL untouched. This lets an event be
+// accepted before its endpoint is registered (it then fails delivery and
+// retries until the endpoint appears) while keeping the events FK satisfied.
+func (r *Repository) EnsureCustomer(customerID string) error {
+	c := model.Customer{CustomerID: customerID}
+	return r.db.Clauses(clause.OnConflict{DoNothing: true}).Create(&c).Error
+}
+
 // GetCustomer returns a customer by id, or ErrNotFound.
 func (r *Repository) GetCustomer(customerID string) (*model.Customer, error) {
 	var c model.Customer
