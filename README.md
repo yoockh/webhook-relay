@@ -311,4 +311,4 @@ Covered: the backoff policy (`retry.go`) and the dispatcher's core behaviours (`
 
 **Aisiya Qutwatunnada**
 
-[GitHub](https://github.com/yoockh) · [LinkedIn](https://linkedin.com/in/yoockh)
+[GitHub](https://github.com/yoockh) · [LinkedIn](https://linkedin.com/in/aisiya-qutwatunnada)
