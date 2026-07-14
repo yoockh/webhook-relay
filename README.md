@@ -247,6 +247,8 @@ All configuration is via environment variables, with zero-config defaults:
 | `DB_DSN` | `webhook_relay.db` | Connection string (SQLite file path or Postgres DSN) |
 | `ENABLE_MOCK` | *(unset)* | Set to `1` to mount the in-process mock customer endpoint |
 
+See `.env.example` for a ready-to-copy template.
+
 To run against PostgreSQL instead:
 ```bash
 DB_DRIVER=postgres \
