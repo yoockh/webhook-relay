@@ -219,6 +219,7 @@ webhook-relay/
 ├── migrations/
 │   └── schema.sql               # canonical PostgreSQL DDL reference
 ├── DECISIONS.md                 # design reasoning + out-of-scope notes
+├── PROMPTS.md                   # AI prompts used during development
 ├── README.md
 ├── go.mod
 └── go.sum
