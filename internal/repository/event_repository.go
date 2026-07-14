@@ -103,6 +103,36 @@ func (r *Repository) ListEvents(customerID string, status string) ([]model.Event
 	return events, err
 }
 
+// NextPendingEvent returns the lowest-sequence pending event for a customer,
+// or (nil, nil) when the customer has no pending work. This is how the worker
+// honours strict per-customer ordering with sequence_number as the source of
+// truth.
+func (r *Repository) NextPendingEvent(customerID string) (*model.Event, error) {
+	var e model.Event
+	err := r.db.
+		Where("customer_id = ? AND status = ?", customerID, model.StatusPending).
+		Order("sequence_number ASC").
+		First(&e).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, nil
+	}
+	if err != nil {
+		return nil, err
+	}
+	return &e, nil
+}
+
+// CustomersWithPendingEvents returns the distinct customer ids that currently
+// have pending events. Useful for re-arming workers (e.g. after restart).
+func (r *Repository) CustomersWithPendingEvents() ([]string, error) {
+	var ids []string
+	err := r.db.Model(&model.Event{}).
+		Where("status = ?", model.StatusPending).
+		Distinct().
+		Pluck("customer_id", &ids).Error
+	return ids, err
+}
+
 // UpdateEventStatus sets an event's status.
 func (r *Repository) UpdateEventStatus(id string, status model.EventStatus) error {
 	return r.db.Model(&model.Event{}).
