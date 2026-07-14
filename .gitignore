@@ -1,0 +1,4 @@
+webhook_relay.db
+*.db
+server
+/tmp/
