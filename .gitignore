@@ -1,4 +1,4 @@
 webhook_relay.db
 *.db
-server
+/server
 /tmp/
